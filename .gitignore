@@ -15,6 +15,7 @@ target/
 
 ### IntelliJ IDEA ###
 .idea
+pom.xml
 *.xml
 *.iws
 *.iml
