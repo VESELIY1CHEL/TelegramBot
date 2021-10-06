@@ -12,7 +12,7 @@ import java.util.List;
 public class StartCommand implements Command {
     private final SendBotMessageService sendBotMessageService;
 
-    public final static String START_MESSAGE="Привет, кто хочет взять слово?";
+    public final static String START_MESSAGE="\uD83D\uDC0AПривет, кто хочет взять слово?";
 
     public StartCommand(SendBotMessageService sendBotMessageService){
         this.sendBotMessageService= sendBotMessageService;
@@ -21,7 +21,7 @@ public class StartCommand implements Command {
     public InlineKeyboardMarkup startMessage(){
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
         InlineKeyboardButton button = new InlineKeyboardButton();
-        button.setText("I want!");
+        button.setText("Я хочу!");
         button.setCallbackData("start_game");
         List<InlineKeyboardButton> keyboardRow = new ArrayList<>();
         keyboardRow.add(button);

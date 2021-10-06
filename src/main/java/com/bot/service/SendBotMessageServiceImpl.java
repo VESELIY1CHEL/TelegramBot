@@ -32,6 +32,7 @@ public class SendBotMessageServiceImpl implements SendBotMessageService {
     public void sendMessageKeyBoard(String chatId, String message, InlineKeyboardMarkup inlineKeyboardMarkup){
 
         SendMessage sendMessage = new SendMessage();
+        sendMessage.enableHtml(true);
         sendMessage.setChatId(chatId);
         sendMessage.setText(message);
         sendMessage.setReplyMarkup(inlineKeyboardMarkup);
