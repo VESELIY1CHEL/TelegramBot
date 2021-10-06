@@ -63,9 +63,9 @@ public class CrocodileBot extends TelegramLongPollingBot{
         }
         else if(update.hasCallbackQuery()){
 
-                if(update.getCallbackQuery().getData().equals(START_GAME.getCommandName())) {
-                    commandContainer.retriveCommand(START_GAME.getCommandName()).execute(update);
-                }
+            String commandName = update.getCallbackQuery().getData();
+            commandContainer.retriveCommand(commandName).execute(update);
+
         }
     }
 

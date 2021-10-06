@@ -7,7 +7,8 @@ public enum CommandName {
     STOP("/stop"),
     NO("/no"),
     HELP("/help"),
-    START_GAME("start_game");
+    START_GAME("start_game"),
+    SHOW_WORD("show_word");
 
     private final String commandName;
 

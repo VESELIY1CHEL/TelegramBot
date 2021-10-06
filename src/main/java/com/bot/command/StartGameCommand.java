@@ -29,19 +29,19 @@ public class StartGameCommand implements Command {
         List<InlineKeyboardButton> keyboardRow1 = new ArrayList<>();
         List<InlineKeyboardButton> keyboardRow2 = new ArrayList<>();
         button11.setText("Посмотреть");
-        button11.setCallbackData("start_game");
+        button11.setCallbackData("show_word");
         button12.setText("Случайное");
-        button12.setCallbackData("randomWord");
+        button12.setCallbackData("random_word");
 
         keyboardRow1.add(button11);
         keyboardRow1.add(button12);
 
         button21.setText("Лёгкое");
-        button21.setCallbackData("easyWord");
+        button21.setCallbackData("easy_word");
         button22.setText("Обычное");
-        button22.setCallbackData("normalWord");
+        button22.setCallbackData("normal_word");
         button23.setText("Сложное");
-        button23.setCallbackData("hardWord");
+        button23.setCallbackData("hard_word");
         keyboardRow2.add(button21);
         keyboardRow2.add(button22);
         keyboardRow2.add(button23);
@@ -57,7 +57,7 @@ public class StartGameCommand implements Command {
     @Override
     public void execute(Update update) {
 
-        sendBotMessageService.answerToButton(AnswerCallbackButton.showWord(update.getCallbackQuery().getId()));
+        sendBotMessageService.answerToButton(AnswerCallbackButton.showWord(update.getCallbackQuery().getId(),"word for game"));
         sendBotMessageService.deleteMessage(update.getCallbackQuery().getMessage().getChatId().toString(),update.getCallbackQuery().getMessage().getMessageId());
         sendBotMessageService.sendMessageKeyBoard(update.getCallbackQuery().getMessage().getChatId().toString(),START_GAME_MESSAGE,startMessage());
     }
