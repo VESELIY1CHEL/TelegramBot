@@ -20,6 +20,7 @@ public class CommandContainer {
                 .put(NO.getCommandName(), new NoCommand(sendBotMessageService))
                 .put(START_GAME.getCommandName(),new StartGameCommand(sendBotMessageService))
                 .put(SHOW_WORD.getCommandName(),new ShowCommand(sendBotMessageService))
+                .put(UNKNOWN_PERSON.getCommandName(),new UnknownPersonCommand(sendBotMessageService))
                 .build();
         unknownCommand = new UnknownCommand(sendBotMessageService);
 

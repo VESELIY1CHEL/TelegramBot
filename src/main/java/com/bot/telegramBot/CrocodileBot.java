@@ -15,8 +15,7 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
-import static com.bot.command.CommandName.NO;
-import static com.bot.command.CommandName.START_GAME;
+import static com.bot.command.CommandName.*;
 
 @Component
 public class CrocodileBot extends TelegramLongPollingBot{
@@ -26,6 +25,8 @@ public class CrocodileBot extends TelegramLongPollingBot{
 
     @Value("${bot.token}")
     private String token;
+
+    private String nameUser="";
 
     private final CommandContainer commandContainer;
 
@@ -63,8 +64,14 @@ public class CrocodileBot extends TelegramLongPollingBot{
         }
         else if(update.hasCallbackQuery()){
 
-            String commandName = update.getCallbackQuery().getData();
-            commandContainer.retriveCommand(commandName).execute(update);
+            if(nameUser.equals("")||nameUser.equals(update.getCallbackQuery().getFrom().getId().toString())) {
+                String commandName = update.getCallbackQuery().getData();
+                nameUser = update.getCallbackQuery().getFrom().getId().toString();
+                commandContainer.retriveCommand(commandName).execute(update);
+            }
+            else{
+                commandContainer.retriveCommand(UNKNOWN_PERSON.getCommandName()).execute(update);
+            }
 
         }
     }

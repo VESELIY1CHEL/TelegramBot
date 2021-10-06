@@ -8,6 +8,7 @@ public enum CommandName {
     NO("/no"),
     HELP("/help"),
     START_GAME("start_game"),
+    UNKNOWN_PERSON("unknown_person"),
     SHOW_WORD("show_word");
 
     private final String commandName;
