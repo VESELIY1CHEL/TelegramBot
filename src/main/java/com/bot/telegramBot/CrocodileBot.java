@@ -3,6 +3,7 @@ package com.bot.telegramBot;
 import com.bot.command.Command;
 import com.bot.command.CommandContainer;
 import com.bot.service.AnswerCallbackButton;
+import com.bot.service.GenerateWord;
 import com.bot.service.SendBotMessageServiceImpl;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -19,6 +20,7 @@ import static com.bot.command.CommandName.*;
 
 @Component
 public class CrocodileBot extends TelegramLongPollingBot{
+    GenerateWord word = new GenerateWord();
     public static String COMMAND_PREFIX = "/";
     @Value("${bot.username}")
     private String username;
@@ -31,7 +33,7 @@ public class CrocodileBot extends TelegramLongPollingBot{
     private final CommandContainer commandContainer;
 
     public CrocodileBot(){
-        this.commandContainer = new CommandContainer(new SendBotMessageServiceImpl(this));
+        this.commandContainer = new CommandContainer(new SendBotMessageServiceImpl(this),word.getWord());
     }
 
     @Override
@@ -53,9 +55,12 @@ public class CrocodileBot extends TelegramLongPollingBot{
             if(update.getMessage().getChat().isGroupChat()) {
                 if (message.startsWith(COMMAND_PREFIX)) {
 
-                    String commandIdentifier = message.split(" ")[0].toLowerCase();
 
+                    String commandIdentifier = message.split(" ")[0].toLowerCase();
                     commandContainer.retriveCommand(commandIdentifier).execute(update);
+                    if(commandIdentifier.equals(START.getCommandName())){
+                        this.checkChanges();
+                    }
                 } else {
                     commandContainer.retriveCommand(NO.getCommandName()).execute(update);
                 }
@@ -63,6 +68,9 @@ public class CrocodileBot extends TelegramLongPollingBot{
             else commandContainer.retriveCommand(NO.getCommandName()).execute(update);
         }
         else if(update.hasCallbackQuery()){
+            if(update.getCallbackQuery().getData().equals(CHANGE_WORD.getCommandName())){
+                checkChanges();
+            }
 
             if(nameUser.equals("")||nameUser.equals(update.getCallbackQuery().getFrom().getId().toString())) {
                 String commandName = update.getCallbackQuery().getData();
@@ -76,5 +84,9 @@ public class CrocodileBot extends TelegramLongPollingBot{
         }
     }
 
+    private void checkChanges(){
+            word.changeWord();
+            commandContainer.setWord(word.getWord(),new SendBotMessageServiceImpl(this));
+    }
 
 }

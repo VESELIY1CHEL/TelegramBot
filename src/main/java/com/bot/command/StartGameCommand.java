@@ -13,9 +13,11 @@ public class StartGameCommand implements Command {
 
     private final SendBotMessageService sendBotMessageService;
     public final static String START_GAME_MESSAGE="<a href=\"tg://user?id=123456789\">parseMode=HTML</a> взял слово.";
+    private String word;
 
-    public StartGameCommand(SendBotMessageService sendBotMessageService){
+    public StartGameCommand(SendBotMessageService sendBotMessageService,String word){
         this.sendBotMessageService= sendBotMessageService;
+        this.word = word;
 
     }
 
@@ -58,7 +60,7 @@ public class StartGameCommand implements Command {
     public void execute(Update update) {
 
         String stMessage = "\uD83D\uDC0AИтак <a href=\"tg://user?id="+update.getCallbackQuery().getFrom().getId().toString()+"\">"+update.getCallbackQuery().getFrom().getFirstName()+"</a>"+" должен объяснить слово за 2 минуты";
-        sendBotMessageService.answerToButton(AnswerCallbackButton.showWord(update.getCallbackQuery().getId(),"word for game"));
+        sendBotMessageService.answerToButton(AnswerCallbackButton.showWord(update.getCallbackQuery().getId(),word));
         sendBotMessageService.deleteMessage(update.getCallbackQuery().getMessage().getChatId().toString(),update.getCallbackQuery().getMessage().getMessageId());
         sendBotMessageService.sendMessageKeyBoard(update.getCallbackQuery().getMessage().getChatId().toString(),stMessage,startMessage());
     }
