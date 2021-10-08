@@ -23,6 +23,9 @@ import static com.bot.command.CommandName.*;
 public class CrocodileBot extends TelegramLongPollingBot{
     CanStartTimer timer = new CanStartTimer();
     GenerateWord word = new GenerateWord();
+
+
+
     public static String COMMAND_PREFIX = "/";
     @Value("${bot.username}")
     private String username;
@@ -52,33 +55,20 @@ public class CrocodileBot extends TelegramLongPollingBot{
     public void onUpdateReceived(Update update) {
 
         if(update.hasMessage() && update.getMessage().hasText()) {
-            String message = update.getMessage().getText().trim(); //listen chat and get message
+            String message = update.getMessage().getText().trim();
             if(update.getMessage().getChat().isGroupChat()) {
                 if (message.startsWith(COMMAND_PREFIX)) {
-
-                    String commandIdentifier = message.split(" ")[0].toLowerCase();
-                    if(!commandIdentifier.equals(START.getCommandName())||timer.votesEnabled()) {
-                        commandContainer.retriveCommand(commandIdentifier).execute(update);
-                        if (commandIdentifier.equals(START.getCommandName())) {
-                            this.checkChanges();
-                            timer.enableVotes();
-
-                        }
-                    }
-                    else{
-                        commandContainer.retriveCommand(NO.getCommandName()).execute(update);
-                    }
-                } else {
-                    commandContainer.retriveCommand(NO.getCommandName()).execute(update);
+                    actionCommand(update);
                 }
+                checkWord(update);
             }
-            else commandContainer.retriveCommand(NO.getCommandName()).execute(update);
+            else commandContainer.retriveCommand("unknown").execute(update);
         }
         else if(update.hasCallbackQuery()){
-            if(update.getCallbackQuery().getData().equals(CHANGE_WORD.getCommandName())){
-                checkChanges();
-            }
 
+
+
+            checkChangeWord(update);
             if(nameUser.equals("")||nameUser.equals(update.getCallbackQuery().getFrom().getId().toString())) {
                 String commandName = update.getCallbackQuery().getData();
                 nameUser = update.getCallbackQuery().getFrom().getId().toString();
@@ -91,9 +81,44 @@ public class CrocodileBot extends TelegramLongPollingBot{
         }
     }
 
-    private void checkChanges(){
+    private void changeWord(){
             word.changeWord();
             commandContainer.setWord(word.getWord(),new SendBotMessageServiceImpl(this));
+    }
+    private void checkWord(Update update){
+        String message = update.getMessage().getText();
+        if(message.toLowerCase().contains(word.getWord())&& !update.getMessage().getFrom().getId().toString().equals(nameUser)){
+            commandContainer.retriveCommand(GUESS_WORD.getCommandName()).execute(update);
+            commandContainer.retriveCommand(START.getCommandName()).execute(update);
+            nameUser = "";
+            timer.offVotes();
+            changeWord();
+        }
+    }
+    private void checkChangeWord(Update update){
+        if (update.getCallbackQuery().getData().equals(START_GAME.getCommandName())) {
+            timer.enableVotes();
+            changeWord();
+        }
+        if(update.getCallbackQuery().getData().equals(CHANGE_WORD.getCommandName())){
+            changeWord();
+        }
+    }
+    public void actionCommand(Update update) {
+        String commandIdentifier = update.getMessage().getText().split(" ")[0].toLowerCase();
+
+        if (!commandIdentifier.equals(START.getCommandName()) | timer.votesEnabled()) {
+
+            commandContainer.retriveCommand(commandIdentifier).execute(update);
+            if (commandIdentifier.equals(START.getCommandName())) {
+                changeWord();
+                timer.enableVotes();
+            }
+
+        } else {
+            commandContainer.retriveCommand(NO.getCommandName()).execute(update);
+        }
+
     }
 
 }

@@ -13,7 +13,7 @@ public class StartGameCommand implements Command {
 
 
     private final SendBotMessageService sendBotMessageService;
-    public final static String START_GAME_MESSAGE="<a href=\"tg://user?id=123456789\">parseMode=HTML</a> взял слово.";
+
     private String word;
 
     public StartGameCommand(SendBotMessageService sendBotMessageService,String word){

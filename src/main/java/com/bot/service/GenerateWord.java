@@ -14,7 +14,7 @@ public class GenerateWord {
         try(InputStream is = this.getClass().getResourceAsStream("/wordCrocodile.txt")) {
            String thi = new String(is.readAllBytes());
            listOfWords = Arrays.asList(thi.split(","));
-           word = listOfWords.get(ThreadLocalRandom.current().nextInt(0,listOfWords.size()));
+           word = listOfWords.get(ThreadLocalRandom.current().nextInt(0,listOfWords.size())).trim();
         }catch (IOException e){
             e.printStackTrace();
         }
@@ -23,7 +23,7 @@ public class GenerateWord {
         return word;
     }
     public String changeWord(){
-        word = listOfWords.get(ThreadLocalRandom.current().nextInt(0,listOfWords.size()));
+        word = listOfWords.get(ThreadLocalRandom.current().nextInt(0,listOfWords.size())).trim();
         return word;
     }
 

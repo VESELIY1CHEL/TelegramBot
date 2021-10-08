@@ -14,4 +14,5 @@ public class CanStartTimer {
             return System.currentTimeMillis() - lastVoteTimeMillis > VOTE_PERIOD;
         }
     }
+    public void offVotes(){lastVoteTimeMillis = 0L;}
 }

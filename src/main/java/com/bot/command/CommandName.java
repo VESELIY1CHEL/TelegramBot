@@ -10,7 +10,8 @@ public enum CommandName {
     START_GAME("start_game"),
     UNKNOWN_PERSON("unknown_person"),
     SHOW_WORD("show_word"),
-    CHANGE_WORD("random_word");
+    CHANGE_WORD("random_word"),
+    GUESS_WORD("guess_word");
 
 
     private final String commandName;

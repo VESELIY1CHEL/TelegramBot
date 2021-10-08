@@ -29,7 +29,7 @@ public class CommandContainer {
                 commandMap.put(SHOW_WORD.getCommandName(),new ShowCommand(sendBotMessageService,this.word));
                 commandMap.put(UNKNOWN_PERSON.getCommandName(),new UnknownPersonCommand(sendBotMessageService));
                 commandMap.put(CHANGE_WORD.getCommandName(),new ChangeCommand(sendBotMessageService, this.word));
-
+                commandMap.put(GUESS_WORD.getCommandName(),new GuessWordCommand(sendBotMessageService,this.word));
         unknownCommand = new UnknownCommand(sendBotMessageService);
 
     }
@@ -42,6 +42,7 @@ public class CommandContainer {
         commandMap.put(CHANGE_WORD.getCommandName(),new ChangeCommand(sendBotMessageService,word));
         commandMap.put(START_GAME.getCommandName(),new StartGameCommand(sendBotMessageService,word));
         commandMap.put(SHOW_WORD.getCommandName(),new ShowCommand(sendBotMessageService, word));
+        commandMap.put(GUESS_WORD.getCommandName(),new GuessWordCommand(sendBotMessageService,word));
     }
 
 }
